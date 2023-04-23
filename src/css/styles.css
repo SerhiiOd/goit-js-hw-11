@@ -2,22 +2,19 @@
   box-sizing: border-box;
 }
 
-header {
+body {
+  font-family: 'Sedgwick Ave Display', cursive;
+
   margin: 0;
-  padding: 0;
 
   display: flex;
-
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-
+}
+header {
   width: 100%;
-  height: 50px;
-
-  background-color: aquamarine;
 }
 
-body,
 h1,
 h2,
 h3,
@@ -36,32 +33,141 @@ ul {
 
 img {
   display: block;
-  max-width: 100%;
+  width: 300px;
+  height: 200px;
+  border-radius: 8px 8px 0 0;
+
+  border-bottom: 2px solid gold;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 55px;
+
+  background-color: rgb(43, 43, 43);
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 26px;
+  line-height: calc(30 / 26);
+  letter-spacing: 0.1em;
+
+  margin-left: 200px;
+
+  /* color: gold; */
+  background-color: rgb(255, 226, 0);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 226, 0, 1) 0%,
+    rgba(199, 194, 194, 1) 80%,
+    rgba(173, 180, 172, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 input {
-  margin-right: 5px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: calc(30 / 14);
+  letter-spacing: 0.06em;
 
-  border-radius: 5px;
-  border-color: blue;
-
-  width: 350px;
+  margin-left: 350px;
+  padding-left: 10px;
+  width: 250px;
   height: 35px;
 
+  border-radius: 15px;
+
   outline: none;
+  background-color: silver;
+  color: black;
+  border: 1px solid gold;
 }
 
 button {
-  margin-left: 5px;
-  margin-right: 5px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: calc(30 / 14);
+  letter-spacing: 0.06em;
 
-  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  border-radius: 15px;
+
+  width: 75px;
   height: 35px;
-
-  border-radius: 5px;
-
-  border-color: lime;
-  background-color: #fff;
+  margin-left: 10px;
 
   outline: none;
+  cursor: pointer;
+
+  background-color: rgb(150, 150, 167);
+  color: black;
+  border: 2px solid gold;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    border 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  background-color: gold;
+  border: 2px solid rgb(150, 150, 167);
+}
+
+button:disabled {
+  color: gray;
+  border: 2px solid rgb(150, 150, 167);
+  background-color: rgb(150, 150, 167);
+
+  cursor: not-allowed;
+}
+
+.load-more {
+  width: 100px;
+
+  margin-top: 15px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  margin-top: 10px;
+}
+
+.photo-card {
+  margin-top: 10px;
+
+  border-radius: 10px;
+
+  border: 2px solid gold;
+}
+
+.info {
+  border-radius: 0 0 8px 8px;
+  background-color: silver;
+}
+
+button.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  opacity: 0;
 }

@@ -4,16 +4,24 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework 10</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <title>GoldPhotos</title>
   </head>
   <body>
     <header>
-      <input type="text" id="search-box" placeholder="Search" />
-      <button type="submit" class="sub-btn">Search</button>
+      <form class="search-form" id="search-form">
+        <p class="logo">GoldPhotos</p>
+        <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
+        <button type="submit">Search</button>
+      </form>
     </header>
 
-    <ul class=""></ul>
-    <div class=""></div>
+    <div class="gallery">
+      <!-- Картки зображень -->
+    </div>
+
+    <button type="button" class="load-more" id="loadMore">Load more</button>
 
     <script src="index.js" type="module"></script>
   </body>
