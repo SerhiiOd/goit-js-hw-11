@@ -4,10 +4,18 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
+// ********************************************************
+// ********************************************************
+// ********************************************************
+
 const refs = {
   divEl: document.querySelector('.gallery'),
   formEl: document.querySelector('.search-form'),
 };
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 const pixabayApiService = new PixabayApiService();
 const loadMoreBtn = new LoadMoreBtn({
@@ -15,24 +23,39 @@ const loadMoreBtn = new LoadMoreBtn({
   isHidden: true,
 });
 
+// ********************************************************
+// ********************************************************
+// ********************************************************
+
 const gallerySimpleLightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
+// ********************************************************
+// ********************************************************
+// ********************************************************
+
 refs.formEl.addEventListener('submit', onSearchSubmit);
 loadMoreBtn.button.addEventListener('click', fetchPhotos);
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 function onSearchSubmit(e) {
   e.preventDefault();
   loadMoreBtn.show();
-
   const form = e.currentTarget;
   pixabayApiService.query = form.elements.searchQuery.value.trim();
   pixabayApiService.resetPage();
   clearPhotosList();
   fetchPhotos().finally(() => form.reset());
 }
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 async function fetchPhotos() {
   loadMoreBtn.disable();
@@ -42,7 +65,6 @@ async function fetchPhotos() {
       loadMoreBtn.hide();
       return;
     }
-
     const markup = await getPhotosMarkup();
     updatePhotosList(markup);
     loadMoreBtn.enable();
@@ -50,25 +72,22 @@ async function fetchPhotos() {
     onError(err);
   }
 }
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 async function getPhotosMarkup() {
   try {
     const { hits } = await pixabayApiService.getPhotos();
-    if (hits.length === 0) {
-      Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-      loadMoreBtn.hide();
-      return;
-    }
-    if (hits.length !== 40) {
-      Notify.failure("We're sorry, but you've reached the end of search results.");
-      loadMoreBtn.hide();
-      return;
-    }
     return hits.reduce((markup, hit) => markup + createMarkup(hit), '');
   } catch (err) {
     onError(err);
   }
 }
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 function createMarkup({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) {
   return `
@@ -93,18 +112,60 @@ function createMarkup({ webformatURL, largeImageURL, tags, likes, views, comment
 </div>`;
 }
 
+// ********************************************************
+// ********************************************************
+// ********************************************************
+
 function updatePhotosList(markup) {
   if (pixabayApiService.query === '') {
     return loadMoreBtn.hide();
   }
   if (markup !== undefined) refs.divEl.insertAdjacentHTML('beforeend', markup);
-
   gallerySimpleLightbox.refresh();
 }
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 function clearPhotosList() {
   refs.divEl.innerHTML = '';
 }
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
+
+function checkTotalHits(resultPromise) {
+  if (resultPromise.hits.length != 0) {
+    Notify.success(`Hooray! We found ${resultPromise.totalHits} images.`);
+    fetchPhotos(resultPromise);
+    return;
+  } else {
+    Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+    return;
+  }
+}
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
+
+function onLoadPage() {
+  let currentPage = pixabayApiService.currentPage;
+  let totalPages = pixabayApiService.allPages;
+
+  if (currentPage > totalPages) {
+    Notify.failure("We're sorry, but you've reached the end of search results.");
+    loadMoreBtn.hide();
+  } else {
+    return pixabayApiService.getPhotos().then(getPhotosMarkup);
+  }
+}
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 function lowScroll() {
   const { height } = refs.divEl.firstElementChild.getBoundingClientRect();
@@ -114,6 +175,10 @@ function lowScroll() {
     behavior: 'smooth',
   });
 }
+
+// ********************************************************
+// ********************************************************
+// ********************************************************
 
 function onError(err) {
   console.error(err);

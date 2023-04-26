@@ -21,6 +21,9 @@ export default class PixabayApiService {
 
     this.incrementPage();
 
+    let pages = Math.ceil(data.totalHits / data.hits.length);
+    this.totalPages = pages;
+
     return data;
   }
 
@@ -30,5 +33,21 @@ export default class PixabayApiService {
 
   resetPage() {
     this.page = 1;
+  }
+
+  get currentPage() {
+    return this.page;
+  }
+
+  set currentPage(value) {
+    this.page = value;
+  }
+
+  get allPages() {
+    return this.totalPages;
+  }
+
+  set allPages(value) {
+    this.totalPages = value;
   }
 }
