@@ -38,7 +38,7 @@ function onSearchSubmit(e) {
   pixabayApiService.resetPage();
   clearPhotosList();
   fetchPhotos().finally(() => {
-    if (totalPictures != 0) Notify.success(`Hooray we found ${totalPictures}`);
+    if (totalPictures != 0) Notify.success(`Hooray we found ${totalPictures} images.`);
     form.reset();
     return;
   });
