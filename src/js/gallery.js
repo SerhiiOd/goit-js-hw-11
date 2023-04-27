@@ -28,19 +28,21 @@ loadMoreBtn.button.addEventListener('click', onLoadPage);
 function onSearchSubmit(e) {
   e.preventDefault();
   loadMoreBtn.show();
-  const query = e.currentTarget.elements.searchQuery.value.trim();
-  if (query === '') {
+  const form = e.currentTarget;
+  pixabayApiService.query = form.elements.searchQuery.value.trim();
+  if (form.elements.searchQuery.value.trim() === '') {
     Notify.failure('It cannot be empty field');
     loadMoreBtn.hide();
     return;
   }
-  pixabayApiService.query = query;
+  pixabayApiService.form;
   pixabayApiService.resetPage();
   clearPhotosList();
   fetchPhotos().finally(() => {
-    if (totalPictures != 0) Notify.success(`Hooray we found ${totalPictures} images.`);
+    if (totalPictures != 0) {
+      return Notify.success(`Hooray we found ${totalPictures} images.`);
+    }
     form.reset();
-    return;
   });
 }
 
@@ -62,7 +64,6 @@ async function getPhotosMarkup() {
     if (hits.length === 0) {
       Notify.failure('Sorry, there are no images matching your search query. Please try again.');
       loadMoreBtn.hide();
-      return;
     }
 
     totalPictures = totalHits;
