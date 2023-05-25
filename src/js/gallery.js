@@ -59,7 +59,9 @@ async function fetchPhotos() {
 
     if (currentPage > totalPages) {
       loadMoreBtn.hide();
-      return Notify.failure("We're sorry, but you've reached the end of search results.");
+      return Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
     }
   } catch (err) {
     onError(err);
@@ -71,7 +73,9 @@ async function getPhotosMarkup() {
     const { hits, totalHits } = await pixabayApiService.getPhotos();
 
     if (hits.length === 0) {
-      Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+      Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
       loadMoreBtn.hide();
     }
 
@@ -83,7 +87,15 @@ async function getPhotosMarkup() {
   }
 }
 
-function createMarkup({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) {
+function createMarkup({
+  webformatURL,
+  largeImageURL,
+  tags,
+  likes,
+  views,
+  comments,
+  downloads,
+}) {
   return `
   <div class="photo-card">
   <a href="${largeImageURL}">
